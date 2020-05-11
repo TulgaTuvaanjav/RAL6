@@ -4,18 +4,19 @@ import QtQuick.Controls 2.2
 Item {
     width: 90
     height: 90
-    property string number
     signal clickSignal(string number)
+    property string number
     Button {
         id: button
 
         anchors.fill: parent
-        text: number;
+        text: number
         highlighted: false
         checkable: false
         font.pointSize: 40
         font.weight: Font.Bold
         font.family: "Arial"
-        onClicked: parent.clickSignal(number)
+
+        onClicked:parent.clickSignal(number)
     }
 }
