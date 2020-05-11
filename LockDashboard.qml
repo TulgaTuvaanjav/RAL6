@@ -10,7 +10,8 @@ Item {
     QtObject {
         id : priv
 
-        property variant passcodr:[1,2,3,4]
+        property variant passcode:[1,2,3,4]
+        property variant newPasscode:[1,2,3,4]
         property int inputIndex: -1
         property bool unlocked: false
         property bool programming: false
@@ -79,43 +80,51 @@ Item {
             }
 
         }
-    }
-
-        Rectangle{
-            anchors.fill: parent
-            ColumnLayout {
-                id: columnLayout
-                anchors.fill: parent
-
-                StatusIndicator {
-                    id: lockedIndicator
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    active: !priv.unlocked
-                }
-
-                StatusIndicator {
-                    id: unlockkingIndicator
-                    color: "#ffe300"
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    active: (!priv.unlocked && priv.inputIndex>=0)
-                }
-
-                StatusIndicator {
-                    id: unlockedIndicator
-                    color: "#42d617"
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    active: priv.unlocked
-                }
-
-                StatusIndicator {
-                    id: programmingIndicator
-                    color: "#201a9c"
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    active: priv.programming
-                }
-
+        function startProgramming()
+        {
+            if(priv.unlocked==true)
+            {
+                priv.programming=true;
+                priv.inputIndex=0;
             }
         }
-
     }
+
+    Rectangle{
+        anchors.fill: parent
+        ColumnLayout {
+            id: columnLayout
+            anchors.fill: parent
+
+            StatusIndicator {
+                id: lockedIndicator
+                anchors.horizontalCenter: parent.horizontalCenter
+                active: !priv.unlocked
+            }
+
+            StatusIndicator {
+                id: unlockkingIndicator
+                color: "#ffe300"
+                anchors.horizontalCenter: parent.horizontalCenter
+                active: (!priv.unlocked && priv.inputIndex>=0)
+            }
+
+            StatusIndicator {
+                id: unlockedIndicator
+                color: "#42d617"
+                anchors.horizontalCenter: parent.horizontalCenter
+                active: priv.unlocked
+            }
+
+            StatusIndicator {
+                id: programmingIndicator
+                color: "#201a9c"
+                anchors.horizontalCenter: parent.horizontalCenter
+                active: priv.programming
+            }
+
+        }
+    }
+
+}
 
