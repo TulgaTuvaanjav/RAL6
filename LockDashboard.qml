@@ -23,42 +23,99 @@ Item {
         function startUnlocking()
         {
             priv.inputIndex=0;
-                    priv.unlocked=false;
+            priv.unlocked=false;
         }
 
+
+        function lock()
+        {
+            priv.inputIndex=-1;
+            priv.unlocked=false;
+        }
+
+        function numberInput(number)
+        {
+            if(priv.inputIndex>=0)
+            {
+                if(priv.programming)
+                {
+                    priv.newPasscode[priv.inputIndex]=number;
+                }
+                else{
+
+                    if(number!==priv.passcode[priv.inputIndex])
+                    {
+                        lock();
+                        return
+                    }
+                }
+
+                if(priv.inputIndex==3)
+                {
+                    if(priv.programming)
+                    {
+                        for(var i=0;i<4;i++)
+                        {
+                            priv.passcode[i]=priv.newPasscode[i];
+                        }
+
+                        lock()
+                    }
+                    else{
+
+                        priv.unlock();
+                    }
+                }
+                else
+                {
+                    priv.inputIndex++
+                }
+
+            }
+
+            else
+            {
+                return
+            }
+
+        }
     }
 
-    Rectangle{
-        anchors.fill: parent
-        ColumnLayout {
-            id: columnLayout
+        Rectangle{
             anchors.fill: parent
+            ColumnLayout {
+                id: columnLayout
+                anchors.fill: parent
 
-            StatusIndicator {
-                id: lockedIndicator
-                anchors.horizontalCenter: parent.horizontalCenter
+                StatusIndicator {
+                    id: lockedIndicator
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    active: !priv.unlocked
+                }
+
+                StatusIndicator {
+                    id: unlockkingIndicator
+                    color: "#ffe300"
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    active: (!priv.unlocked && priv.inputIndex>=0)
+                }
+
+                StatusIndicator {
+                    id: unlockedIndicator
+                    color: "#42d617"
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    active: priv.unlocked
+                }
+
+                StatusIndicator {
+                    id: programmingIndicator
+                    color: "#201a9c"
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    active: priv.programming
+                }
+
             }
-
-            StatusIndicator {
-                id: unlockkingIndicator
-                color: "#ffe300"
-                anchors.horizontalCenter: parent.horizontalCenter
-            }
-
-            StatusIndicator {
-                id: unlockedIndicator
-                color: "#42d617"
-                anchors.horizontalCenter: parent.horizontalCenter
-            }
-
-            StatusIndicator {
-                id: programmingIndicator
-                color: "#201a9c"
-                anchors.horizontalCenter: parent.horizontalCenter
-            }
-
-
         }
+
     }
 
-}
